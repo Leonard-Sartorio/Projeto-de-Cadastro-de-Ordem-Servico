@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <cctype>
+#include <cctype> // para a verificação dos erros, is digit posterior
 
 using namespace std;
 
@@ -31,11 +31,11 @@ using namespace std;
 		//iniciando a contagem das IDs
 		os.id = contadorID++;
 		
-		// limpando o buffer do teclado, igual fflush(stdin)
+		// limpando o buffer do teclado, igual fflush(stdin) de C
 		cin.ignore();
 		
 		cout << "Responsavel: ";
-		// os.variavel significa ler 
+		// os.variavel significa ler a linha digitada
 		getline(cin, os.responsavel);
 		
 		cout << "Codigo da Empresa: ";
@@ -94,6 +94,24 @@ using namespace std;
 		}
 	}
 	
+	// Função para deletar as ordens
+	void deletarordem(){
+		int id;
+		cout << "Digite a ID para deletar";
+		cin >> id;
+		
+		//percorre o vetor da lista
+		for (int i = 0; i < lista.size(); i++){
+			// se o valor de id da posição de lista for igual a id solicitada para digitar
+			if (lista[i].id == id){
+				// remove item da posição i
+				lista.erase(lista.begin() + i);
+				cout << "Ordem Excluida";
+				return
+			}
+		}
+	}
+	
 // Função Principal para chamar as funções	
 int main() {
     int opcao;
@@ -101,6 +119,7 @@ int main() {
     do {
         cout << "\n1 - Criar Ordens\n";
         cout << "2 - Listar Ordens\n";
+        cout << "3 - Deletar Ordens\n";
         cout << "0 - Sair\n";
         cout << "Escolha: ";
         cin >> opcao;
@@ -108,6 +127,7 @@ int main() {
         switch(opcao) {
             case 1: criarordem(); break;
             case 2: listarordem(); break;
+			case 3: deletarordem(); break;
         }
 
     } while(opcao != 0);
