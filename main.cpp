@@ -41,10 +41,10 @@ using namespace std;
 		cout << "Codigo da Empresa: ";
 		getline(cin, os.codigoempresa);
 		
-		cout << "Nome do Contato";
+		cout << "Nome do Contato: ";
 		getline(cin, os.nomecontato);
 		
-		cout << "Telefone para contato";
+		cout << "Telefone para contato: ";
 		getline(cin, os.telefone);
 		
 		cout << "Email: ";
@@ -62,10 +62,10 @@ using namespace std;
 		cout << "Forma de Pagamento: ";
 		getline(cin, os.formapagamento);
 		
-		cout << "Digite a data de abertura da ordem: ";
+		cout << "Digite a data de abertura da ordem: (dd/mm/aaaa) ";
 		getline(cin, os.dataabertura);
 		
-		cout << "Digite a previsao de data de entrega: ";
+		cout << "Digite a previsao de data de entrega: (dd/mm/aaaa) ";
 		getline(cin, os.dataentrega);
 		
 		// adiciona a ordem no vetor dinamico lista
@@ -97,7 +97,7 @@ using namespace std;
 	// Função para deletar as ordens
 	void deletarordem(){
 		int id;
-		cout << "Digite a ID para deletar";
+		cout << "Digite a ID para deletar\n";
 		cin >> id;
 		
 		//percorre o vetor da lista
@@ -106,12 +106,69 @@ using namespace std;
 			if (lista[i].id == id){
 				// remove item da posição i
 				lista.erase(lista.begin() + i);
-				cout << "Ordem Excluida";
-				return
+				cout << "\nOrdem Excluida";
+				return;
 			}
 		}
 	}
 	
+void editarcampo (string &campo){
+	string novovalor;
+	cout << "Digite o novo valor\n";
+	cin.ignore();
+	getline(cin, novovalor);
+	
+	campo = novovalor;
+}	
+	
+	
+	void editarordem(){
+		int id, edit; 
+		cout << "Digite a ID para editar\n";
+		cin >> id;
+		
+		cin.ignore();
+		
+		// percorre o vetor da lista e tentar a achar a id da ordem para editar
+		for (int i = 0; i < lista.size(); i++){
+			if (lista[i].id == id){
+				// menu para uma edição unica
+				do {
+				
+				cout << "Qual campo deseja editar?" << endl;
+				cout << "1 - Responsavel: " << endl;
+				cout << "2 - Codigo da empresa: " << endl;
+				cout << "3 - Contato: " << endl;
+				cout << "4 - Telefone: " << endl;
+				cout << "5 - Email: " << endl;
+				cout << "6 - Tipo de Serviço: " << endl;
+				cout << "7 - Descricao: " << endl;
+				cout << "8 - Observacoes: "  << endl;
+				cout << "9 - Forma de Pagamento: " << endl;
+				cout << "10 - Data de Entrega: " << endl;
+				cout << "0 - Sair" << endl;
+				cin >> edit;
+				
+				switch(edit){
+					case 1: editarcampo(lista[i].responsavel); break;
+					case 2: editarcampo(lista[i].codigoempresa); break;
+					case 3: editarcampo(lista[i].nomecontato); break;
+					case 4: editarcampo(lista[i].telefone); break;
+					case 5: editarcampo(lista[i].email); break;
+					case 6: editarcampo(lista[i].tiposervico); break;
+					case 7: editarcampo(lista[i].descricao); break;
+					case 8: editarcampo(lista[i].observacoes); break;
+					case 9: editarcampo(lista[i].formapagamento); break;
+					case 10: editarcampo(lista[i].dataentrega); break;
+					
+						
+				}
+			} while (edit != 0);
+		}
+	}
+}
+
+
 // Função Principal para chamar as funções	
 int main() {
     int opcao;
@@ -120,6 +177,7 @@ int main() {
         cout << "\n1 - Criar Ordens\n";
         cout << "2 - Listar Ordens\n";
         cout << "3 - Deletar Ordens\n";
+        cout << "4 - Editar Ordens\n";
         cout << "0 - Sair\n";
         cout << "Escolha: ";
         cin >> opcao;
@@ -128,6 +186,7 @@ int main() {
             case 1: criarordem(); break;
             case 2: listarordem(); break;
 			case 3: deletarordem(); break;
+			case 4: editarordem(); break;
         }
 
     } while(opcao != 0);
