@@ -1,10 +1,8 @@
 #include <iostream>
 #include <vector>
 
-
 using namespace std;
 
-	//Método inseguro, sem método construtor
 	class Ordemservico{
 	  public :
 		int id;
@@ -27,66 +25,77 @@ using namespace std;
 	vector<Ordemservico> lista;
 	//inicializar variavel para contar as ids de serviço
 	int contadorID = 1;
+
+	float lerfloat (string mensagem){
+		float valor;
+
+		while (true) {
+			cout << mensagem;
+			cin >> valor;
+
+			if(cin.fail() || valor < 0){
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "Entrada invalida! Digite um numero positivo.\n";
+			} else {
+				cin.ignore(1000, '\n');
+				return valor;
+			}
+		}
+	}
 	
+	// função que cria ordem
 	void criarordem(){
 		//definindo objeto os da classe OrdemServico
 		Ordemservico os;
 		//iniciando a contagem das IDs
 		os.id = contadorID++;
 		
-		// limpando o buffer do teclado, igual fflush(stdin) de C
 		cin.ignore();
 		
 		cout << "Responsavel: ";
-		// os.variavel significa ler a linha digitada e guardar o valor em objeto da variavel
-		cin.ignore();
 		getline(cin, os.responsavel);
 		
 		cout << "Codigo da Empresa: ";
-		cin.ignore();
 		getline(cin, os.codigoempresa);
 		
 		cout << "Nome do Contato: ";
-		cin.ignore();
 		getline(cin, os.nomecontato);
 		
 		cout << "Telefone para contato: ";
-		cin.ignore();
 		getline(cin, os.telefone);
 		
 		cout << "Email: ";
-		cin.ignore();
 		getline(cin, os.email);
 		
 		cout << "Tipo de Servico: ";
-		cin.ignore();
 		getline(cin, os.tiposervico);
 		
 		cout << "Descricao do Servico: ";
-		cin.ignore();
 		getline(cin, os.descricao);
 		
 		cout << "Observacao: ";
-		cin.ignore();
 		getline(cin, os.observacoes);
 		
 		cout << "Forma de Pagamento: ";
-		cin.ignore();
 		getline(cin, os.formapagamento);
 		
 		cout << "Digite a data de abertura da ordem: (dd/mm/aaaa) ";
-		cin.ignore();
 		getline(cin, os.dataabertura);
 		
 		cout << "Digite a previsao de data de entrega: (dd/mm/aaaa) ";
-		cin.ignore();
 		getline(cin, os.dataentrega);
 		
-		cout << "Digite o valor do servico em R$: ";
-		cin >> os.valorservico;
+		os.valorservico = lerfloat("Digite o valor do servico em R$: ");
 		
-		cout << "Digite o desconto (se houver) em R$: ";
-		cin >> os.desconto;
+		do {
+			os.desconto = lerfloat("Digite o desconto (se houver) em R$: ");
+			
+			if (os.desconto > os.valorservico){	
+				cout << "Desconto nao pode ser maior que o valor de servico!\n";	
+			}
+			
+		} while (os.desconto > os.valorservico);
 		
 		// adiciona a ordem no vetor dinamico lista
 		lista.push_back(os);
@@ -98,9 +107,10 @@ using namespace std;
 	// Função que lista 
 	void listarordem(){
 		
+		//função que define da biblioteca vector que define quando um vetor vazio
 		if (lista.empty()){
-		cout << "\nNao ha ordens criadas!\n";
-		return;
+			cout << "\nNao ha ordens criadas!\n";
+			return;
 		}
 		
 		//Percorre o vetor dinamico da variavel lista dentre os objetos os de ordem de serviço
@@ -111,13 +121,13 @@ using namespace std;
 			cout << "Contato: " << os.nomecontato << endl;
 			cout << "Telefone: " << os.telefone << endl;
 			cout << "Email: " << os.email << endl;
-			cout << "Tipo de Serviço: " << os.tiposervico << endl;
+			cout << "Tipo de Servico: " << os.tiposervico << endl;
 			cout << "Descricao: " << os.descricao << endl;
 			cout << "Observacoes: " << os.observacoes << endl;
 			cout << "Forma de Pagamento: " << os.formapagamento << endl;
 			cout << "Data de Abertura: " << os.dataabertura << endl;
 			cout << "Data de Entrega: " << os.dataentrega << endl;
-			cout << "Valor do Servico: " << os.valorservico - os.desconto << endl;
+			cout << "Valor do Servico: R$ " << os.valorservico - os.desconto << endl;
 		}
 	}
 	
@@ -132,85 +142,80 @@ using namespace std;
 		
 		int id;
 		
-		do {
-		
-		cout << "Digite a ID para deletar\n";
-		cin >> id;
-		
-		// Se a ID nao for caractere invalido
-		if(cin.fail()){
-			cin.clear(); // limpa
-			cin.ignore(1000, '\n');
-			cout << "\nEntrada Inválida! Tente Novamente...\n";
+		while (true) {
+			cout << "Digite a ID para deletar\n";
+			cin >> id;
+			
+			if(cin.fail()){
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "\nEntrada Invalida! Tente Novamente...\n";
+			} else {
+				break;
+			}
 		}
 		
-	} while (cin.fail());
-	
-		
-		//percorre o vetor da lista
 		for (int i = 0; i < lista.size(); i++){
-			// se o valor de id da posição de lista for igual a id solicitada para digitar
 			if (lista[i].id == id){
-				// remove item da posição i
 				lista.erase(lista.begin() + i);
-				cout << "\nOrdem Excluida";
+				cout << "\nOrdem Excluida!\n";
 				return;
 			}
 		}
-		// se digitar um Id que nao foi criado
+		
 		cout << "\nOrdem nao encontrada!\n";
 	}
 	
-void editarcampo (string &campo){
-	string novovalor;
-	cout << "Digite o novo valor\n";
-	cin.ignore();
-	getline(cin, novovalor);
-	
-	campo = novovalor;
-}	
-
-void editarcamponumerico (float &campo){
-	float novovalor;
-	
-	do{
-
-	cout << "Digite o novo valor\n";
-	cin >> novovalor;
-	
-        if(cin.fail()){
-        	cin.clear(); //clear erro
-        	//ignora ate 1000 caracteres e espaço no buffer
-        	cin.ignore(1000, '\n');
-        	cout << "\nEntrada Invalida! Tente Novamente\n";
-        	//bug tratado: retirei continue para continuar o fluxo da forma certa sem perder os dados
-		}		
+	void editarcampo (string &campo){
+		string novovalor;
+		cout << "Digite o novo valor\n";
+		getline(cin, novovalor);
 		
-	} while (cin.fail());
-	
-	campo = novovalor;
-	
-	cout << "\nCampo Editado!";
-}
-	
+		campo = novovalor;
+	}	
+
+	void editarcamponumerico (float &campo){
+		float novovalor;
+		
+		while (true){
+			cout << "Digite o novo valor\n";
+			cin >> novovalor;
+			
+			if(cin.fail() || novovalor < 0){
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "\nEntrada Invalida! Tente Novamente\n";
+			} else {
+				cin.ignore(1000, '\n');
+				campo = novovalor;
+				cout << "\nCampo Editado!";
+				return;
+			}
+		}
+	}
 	
 	void editarordem(){
 		
 		if (lista.empty()){
-		cout << "\nNao ha ordens criadas!\n";
-		return;
+			cout << "\nNao ha ordens criadas!\n";
+			return;
 		}
 		
 		int id, edit; 
 		cout << "Digite a ID para editar\n";
 		cin >> id;
 		
+		if(cin.fail()){
+			cin.clear();
+			cin.ignore(1000, '\n');
+			cout << "\nEntrada Invalida! Tente Novamente\n";
+			return;
+		}
+		
 		cin.ignore();
 		
-		// percorre o vetor da lista e tentar a achar a id da ordem para editar
 		for (int i = 0; i < lista.size(); i++){
 			if (lista[i].id == id){
-				// menu para uma edição unica
 				do {
 				
 				cout << "\nQual campo deseja editar?" << endl;
@@ -226,8 +231,22 @@ void editarcamponumerico (float &campo){
 				cout << "10 - Data de Entrega: " << endl;
 				cout << "11 - Valor de Servico: " << endl;
 				cout << "12 - Valor Desconto: " << endl;
-				cout << "0 - Sair" << endl;
+				cout << "0 - Finalizar Edicao" << endl;
 				cin >> edit;
+				
+				if(cin.fail()){
+					cin.clear();
+					cin.ignore(1000, '\n');
+					cout << "\nEntrada Invalida! Tente Novamente\n";
+					continue;
+				}
+				
+				if (edit < 0 || edit > 12){
+					cout << "\nOpcao Invalida! Tente Novamente!!!\n";
+					continue;
+				}
+				
+				cin.ignore();
 				
 				switch(edit){
 					case 1: editarcampo(lista[i].responsavel); break;
@@ -242,13 +261,15 @@ void editarcamponumerico (float &campo){
 					case 10: editarcampo(lista[i].dataentrega); break;
 					case 11: editarcamponumerico(lista[i].valorservico); break;
 					case 12: editarcamponumerico(lista[i].desconto); break;
-						
 				}
 			} while (edit != 0);
+			
+			return;
 		}
 	}
+	
+	cout << "\nOrdem nao encontrada!\n";
 }
-
 
 // Função Principal para chamar as funções
 int main() {
@@ -260,18 +281,16 @@ int main() {
         cout << "3 - Deletar Ordens\n";
         cout << "4 - Editar Ordens\n";
         cout << "0 - Sair\n";
-        cout << "Escolha: ";
+        cout << "\nEscolha: ";
         cin >> opcao;
         
         //verificação para nao aceitar letras
         if(cin.fail()){
-        	cin.clear(); //clear erro
-        	//ignora ate 1000 caracteres e espaço no buffer
-        	cin.ignore(1000, '\n');
+        	cin.clear();
+			cin.ignore(1000, '\n');
         	cout << "\nEntrada Invalida! Tente Novamente\n";
-        	// Recebe o valor invalido para cair no deafult de switch
         	opcao = -1;
-        	continue; // volta pro menu
+        	continue;
 		}
 
         switch(opcao) {
@@ -279,14 +298,12 @@ int main() {
             case 2: listarordem(); break;
 			case 3: deletarordem(); break;
 			case 4: editarordem(); break;
-			case 0: break;
+			case 0: cout << "\nSaindo..."; break;
 			default: 
 			 cout << "\nNumero Invalido Digite novamente...\n" << endl;
-			 continue;
 		}
 
     } while(opcao != 0);
 
     return 0;
-	}
-
+}
