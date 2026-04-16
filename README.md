@@ -1,4 +1,4 @@
-# Projeto-de-Cadastro-de-Ordem-Servi-o
+# Projeto-de-Cadastro-de-Ordem-Servico
 
 # Sistema de Ordem de Serviço
 
