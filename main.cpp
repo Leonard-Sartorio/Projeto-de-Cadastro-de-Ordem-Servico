@@ -3,10 +3,20 @@
 
 using namespace std;
 
+// Enum de setores
+enum Setor 
+{
+ Contabilidade,
+ Fiscal,
+ DepartamentoPessoal,
+ Legalizacao,
+ Administrativo
+};
+
 	class Ordemservico{
 	  public :
 		int id;
-		string responsavel;
+		Setor responsavel; // agora usando enum
 		string codigoempresa;
 		string nomecontato;
 		string telefone;
@@ -53,8 +63,28 @@ using namespace std;
 		
 		cin.ignore();
 		
-		cout << "Responsavel: ";
-		getline(cin, os.responsavel);
+		// seleção do setor (responsavel)
+		int setor;
+		do {
+			cout << "Responsavel (Setor):\n";
+			cout << "0 - Contabilidade\n";
+			cout << "1 - Fiscal\n";
+			cout << "2 - Departamento Pessoal\n";
+			cout << "3 - Legalizacao\n";
+			cout << "4 - Administrativo\n";
+			cout << "Escolha: ";
+			cin >> setor;
+
+			if(cin.fail() || setor < 0 || setor > 4){
+				cin.clear();
+				cin.ignore(1000, '\n');
+				cout << "Opcao invalida!\n";
+			}
+
+		} while(cin.fail() || setor < 0 || setor > 4);
+
+		os.responsavel = (Setor)setor;
+		cin.ignore();
 		
 		cout << "Codigo da Empresa: ";
 		getline(cin, os.codigoempresa);
@@ -112,11 +142,19 @@ using namespace std;
 			cout << "\nNao ha ordens criadas!\n";
 			return;
 		}
+
+		string setores[] = {
+			"Contabilidade",
+			"Fiscal",
+			"Departamento Pessoal",
+			"Legalizacao",
+			"Administrativo"
+		};
 		
 		//Percorre o vetor dinamico da variavel lista dentre os objetos os de ordem de serviço
 		for (auto os : lista){
 			cout << "\nID: " << os.id << endl;
-			cout << "Responsavel: " << os.responsavel << endl;
+			cout << "Responsavel: " << setores[os.responsavel] << endl;
 			cout << "Codigo da empresa: " << os.codigoempresa << endl;
 			cout << "Contato: " << os.nomecontato << endl;
 			cout << "Telefone: " << os.telefone << endl;
@@ -249,7 +287,6 @@ using namespace std;
 				cin.ignore();
 				
 				switch(edit){
-					case 1: editarcampo(lista[i].responsavel); break;
 					case 2: editarcampo(lista[i].codigoempresa); break;
 					case 3: editarcampo(lista[i].nomecontato); break;
 					case 4: editarcampo(lista[i].telefone); break;
@@ -276,7 +313,8 @@ int main() {
     int opcao;
 
     do {
-        cout << "\n1 - Criar Ordens\n";
+    	cout << "\nSistema de Cadastro de Ordem\n";
+        cout << "1 - Criar Ordens\n";
         cout << "2 - Listar Ordens\n";
         cout << "3 - Deletar Ordens\n";
         cout << "4 - Editar Ordens\n";
