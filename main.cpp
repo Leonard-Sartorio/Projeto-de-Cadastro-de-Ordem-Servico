@@ -29,6 +29,11 @@ enum Setor
 		string dataentrega;
 		float valorservico;
 		float desconto;
+		
+		// metodo do valor final
+		float getvalorfinal(){
+			return valorservico - desconto;
+		}
 	};
 	
 	// declarar vetor dinâmico que armazena os dados de objeto de  Ordemserviço na variavel lista
@@ -36,6 +41,7 @@ enum Setor
 	//inicializar variavel para contar as ids de serviço
 	int contadorID = 1;
 
+	//função para garantir que o usuário digite um número válido.
 	float lerfloat (string mensagem){
 		float valor;
 
@@ -142,7 +148,8 @@ enum Setor
 			cout << "\nNao ha ordens criadas!\n";
 			return;
 		}
-
+	
+		//vetor pra expor a saida
 		string setores[] = {
 			"Contabilidade",
 			"Fiscal",
@@ -165,14 +172,14 @@ enum Setor
 			cout << "Forma de Pagamento: " << os.formapagamento << endl;
 			cout << "Data de Abertura: " << os.dataabertura << endl;
 			cout << "Data de Entrega: " << os.dataentrega << endl;
-			cout << "Valor do Servico: R$ " << os.valorservico - os.desconto << endl;
+			cout << "Valor do Servico: R$ " << os.getvalorfinal() << endl;
 		}
 	}
 	
 	// Função para deletar as ordens
 	void deletarordem(){
 		
-		//Verificação para se caso um usuario querer usar um crud sem ter nenhuma id
+		//Verificação para se caso um usuario querer deletar sem ter nenhuma id
 		if (lista.empty()){
 			cout << "\nNao ha ordens criadas!\n";
 			return;
@@ -231,8 +238,32 @@ enum Setor
 			}
 		}
 	}
-	
+	Setor editarsetor(){
+	int setor;
+
+	while (true){
+		cout << "Escolha o novo setor:\n";
+		cout << "0 - Contabilidade\n";
+		cout << "1 - Fiscal\n";
+		cout << "2 - Departamento Pessoal\n";
+		cout << "3 - Legalizacao\n";
+		cout << "4 - Administrativo\n";
+		cout << "Escolha: ";
+		cin >> setor;
+
+		if(cin.fail() || setor < 0 || setor > 4){
+			cin.clear();
+			cin.ignore(1000, '\n');
+			cout << "Opcao invalida!\n";
+		} else {
+			cin.ignore(1000, '\n');
+			return (Setor)setor;
+		}
+	}
+}
+
 	void editarordem(){
+		
 		
 		if (lista.empty()){
 			cout << "\nNao ha ordens criadas!\n";
@@ -287,6 +318,7 @@ enum Setor
 				cin.ignore();
 				
 				switch(edit){
+					case 1: lista[i].responsavel = editarsetor(); break;
 					case 2: editarcampo(lista[i].codigoempresa); break;
 					case 3: editarcampo(lista[i].nomecontato); break;
 					case 4: editarcampo(lista[i].telefone); break;
@@ -307,6 +339,7 @@ enum Setor
 	
 	cout << "\nOrdem nao encontrada!\n";
 }
+
 
 // Função Principal para chamar as funções
 int main() {
